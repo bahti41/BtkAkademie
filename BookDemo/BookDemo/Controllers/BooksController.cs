@@ -74,6 +74,7 @@ namespace BookDemo.Controllers
             return NoContent();
         }
 
+
         [HttpDelete("{id}")]
         public IActionResult DeletedAllBook([FromRoute(Name ="id")] int id)
         {
