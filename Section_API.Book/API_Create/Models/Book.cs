@@ -1,4 +1,4 @@
-﻿namespace BookDemo.Models
+﻿namespace API_Create.Models
 {
     public class Book
     {

@@ -1,12 +1,10 @@
-﻿using BookDemo.Models;
-
-namespace BookDemo.Data
+﻿namespace API_Create.Data
 {
-    public static class ApplicationContext
+    public class ApplicationContext
     {
         public static List<Book> Books { get; set; }
         static ApplicationContext()
-        {   
+        {
             Books = new List<Book>()
             {
                 new Book() { Id=1, Title="Karagöz ve hacıvar", Price=75},

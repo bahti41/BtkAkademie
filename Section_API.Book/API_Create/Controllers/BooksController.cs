@@ -1,11 +1,9 @@
-﻿using BookDemo.Data;
-using BookDemo.Models;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace BookDemo.Controllers
+namespace API_Create.Controllers
 {
-    [Route("api/Books")]
+    [Route("api/[controller]")]
     [ApiController]
     public class BooksController : ControllerBase
     {
@@ -76,11 +74,11 @@ namespace BookDemo.Controllers
 
 
         [HttpDelete("{id}")]
-        public IActionResult DeletedAllBook([FromRoute(Name ="id")] int id)
+        public IActionResult DeletedAllBook([FromRoute(Name = "id")] int id)
         {
             var entity = ApplicationContext
                 .Books
-                .Find ( b => b.Id.Equals(id));
+                .Find(b => b.Id.Equals(id));
 
             if (entity is null)
                 return NotFound(new
@@ -89,8 +87,23 @@ namespace BookDemo.Controllers
                     messag = $"Book With id:{id} could not found."
                 });
             ApplicationContext.Books.Remove(entity);
-            return NoContent(); 
+            return NoContent();
 
+        }
+
+        [HttpPatch("{id}")]
+        public IActionResult PartialOneBook([FromRoute(Name = "id")] int id, [FromBody] JsonPatchDocument<Book> bookPatch)
+        {
+            var entity = ApplicationContext
+                .Books
+                .Find(b => b.Id.Equals(id));
+
+            if (entity is null)
+                return NotFound();
+
+            bookPatch.ApplyTo(entity);
+
+            return NoContent();
         }
     }
 }
