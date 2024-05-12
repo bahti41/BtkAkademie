@@ -2,11 +2,16 @@
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Services.Contracts;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace Web.API.Controllers
+namespace Presentation.Controller
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api/[controller]")]
     public class BooksController : ControllerBase
     {
         private readonly IServiceManager _manager;
@@ -81,7 +86,7 @@ namespace Web.API.Controllers
                 if (book is null)
                     return BadRequest();
 
-                _manager.BookService.UpdateOneBook(id, book,true);
+                _manager.BookService.UpdateOneBook(id, book, true);
 
                 return NoContent();
             }
@@ -98,7 +103,7 @@ namespace Web.API.Controllers
         {
             try
             {
-                _manager.BookService.DeleteOneBook(id,false);
+                _manager.BookService.DeleteOneBook(id, false);
 
                 return NoContent();
             }
@@ -123,7 +128,7 @@ namespace Web.API.Controllers
                 if (entity is null)
                     return NotFound();
 
-                _manager.BookService.UpdateOneBook(id,entity,true);
+                _manager.BookService.UpdateOneBook(id, entity, true);
 
                 return NoContent();
             }
