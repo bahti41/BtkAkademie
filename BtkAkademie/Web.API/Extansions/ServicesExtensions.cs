@@ -11,7 +11,7 @@ namespace Web.API.Extansions
         public static void ConfigureSqlContext(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddDbContext<BookDbContext>(options =>
-            options.UseSqlServer(configuration.GetConnectionString("SqlConnection")));
+            options.UseSqlServer(configuration.GetConnectionString("SqlConncetion")));
 
         }
 
