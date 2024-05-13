@@ -1,4 +1,5 @@
 ﻿using Entities.Concrete;
+using Entities.DTOs;
 using Entities.Exceptions;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
@@ -6,6 +7,7 @@ using Services.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -41,28 +43,35 @@ namespace Presentation.Controller
         }
 
         [HttpPost]
-        public IActionResult CreateOneBook([FromBody] Book book)
+        public IActionResult CreateOneBook([FromBody] BookForInsertionDTO bookDto)
         {
 
-            if (book is null)
-                return BadRequest();
+            if (bookDto is null)
+                return BadRequest();//404
 
-            _manager.BookService.CreatOneBook(book);
+            if (!ModelState.IsValid)
+                return UnprocessableEntity(ModelState);//422
 
-            return StatusCode(201, book);
+
+            var book = _manager.BookService.CreatOneBook(bookDto);
+
+            return StatusCode(201, book);//204
         }
 
 
         [HttpPut("{id}")]
-        public IActionResult UpdateOneBook([FromRoute(Name = "id")] int id, [FromBody] Book book)
+        public IActionResult UpdateOneBook([FromRoute(Name = "id")] int id, [FromBody] BookForUpdateDTO bookDto)
         {
 
-            if (book is null)
-                return BadRequest();
+            if (bookDto is null)
+                return BadRequest();//404
 
-            _manager.BookService.UpdateOneBook(id, book, true);
+            if (!ModelState.IsValid)
+                return UnprocessableEntity(ModelState);//422
 
-            return NoContent();
+            _manager.BookService.UpdateOneBook(id, bookDto, true);
+
+            return NoContent();//204
         }
 
 
@@ -77,16 +86,22 @@ namespace Presentation.Controller
 
 
         [HttpPatch("{id}")]
-        public IActionResult PartiallyUpdateOneBook([FromRoute(Name = "id")] int id, [FromBody] JsonPatchDocument<Book> bookPatch)
+        public IActionResult PartiallyUpdateOneBook([FromRoute(Name = "id")] int id, [FromBody] JsonPatchDocument<BookForUpdateDTO> bookPatch)
         {
+            if (bookPatch is null)
+                return BadRequest();
 
-            var entity = _manager
-                .BookService
-                .GetOneBookId(id, true);
+            var result = _manager.BookService.GetOneBookForPatch(id, false);
 
-            bookPatch.ApplyTo(entity);
-            _manager.BookService.UpdateOneBook(id, entity, true);
+            bookPatch.ApplyTo(result.bookForUpdateDTO,ModelState);
 
+            TryValidateModel(result.bookForUpdateDTO);
+
+            if (!ModelState.IsValid)
+                return UnprocessableEntity(ModelState);
+
+            _manager.BookService.SaveChangesForPatch(result.bookForUpdateDTO, result.book);
+            
             return NoContent();
         }
     }
