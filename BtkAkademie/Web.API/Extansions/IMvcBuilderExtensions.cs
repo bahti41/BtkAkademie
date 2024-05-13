@@ -7,6 +7,7 @@ namespace Web.API.Extansions
         public static IMvcBuilder AddCustomCvsFormantter(this IMvcBuilder builder)=>
             builder.AddMvcOptions(config =>
                 config.OutputFormatters
-                .Add(new CsvOutputFormatter()));
+            .Add(new CsvOutputFormatter()));
+
     }
 }

@@ -18,9 +18,10 @@ builder.Services.AddControllers(config =>
     .AddCustomCvsFormantter()
     //Xml Formantýnda calýþtýrma
     .AddXmlDataContractSerializerFormatters()
-
     .AddApplicationPart(typeof(Presentation.AssemblyReference).Assembly)
     .AddNewtonsoftJson();
+
+
 // Dogrulamalar iþlemleri filitreleme
 builder.Services.Configure<ApiBehaviorOptions>(options =>
 {
@@ -30,9 +31,6 @@ builder.Services.Configure<ApiBehaviorOptions>(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddControllers();
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
 
 //SqlServer Connection
 builder.Services.ConfigureSqlContext(builder.Configuration);

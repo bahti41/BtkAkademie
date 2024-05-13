@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 namespace Presentation.Controller
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/books")]
     public class BooksController : ControllerBase
     {
         private readonly IServiceManager _manager;
@@ -47,7 +47,7 @@ namespace Presentation.Controller
         {
 
             if (bookDto is null)
-                return BadRequest();//404
+                return BadRequest();//400
 
             if (!ModelState.IsValid)
                 return UnprocessableEntity(ModelState);//422
@@ -64,12 +64,12 @@ namespace Presentation.Controller
         {
 
             if (bookDto is null)
-                return BadRequest();//404
+                return BadRequest();//400
 
             if (!ModelState.IsValid)
                 return UnprocessableEntity(ModelState);//422
 
-            _manager.BookService.UpdateOneBook(id, bookDto, true);
+            _manager.BookService.UpdateOneBook(id, bookDto, false);
 
             return NoContent();//204
         }
@@ -81,7 +81,7 @@ namespace Presentation.Controller
 
             _manager.BookService.DeleteOneBook(id, false);
 
-            return NoContent();
+            return NoContent();// 204
         }
 
 
@@ -89,20 +89,20 @@ namespace Presentation.Controller
         public IActionResult PartiallyUpdateOneBook([FromRoute(Name = "id")] int id, [FromBody] JsonPatchDocument<BookForUpdateDTO> bookPatch)
         {
             if (bookPatch is null)
-                return BadRequest();
+                return BadRequest();//400
 
             var result = _manager.BookService.GetOneBookForPatch(id, false);
 
-            bookPatch.ApplyTo(result.bookForUpdateDTO,ModelState);
+            bookPatch.ApplyTo(result.bookForUpdateDto,ModelState);
 
-            TryValidateModel(result.bookForUpdateDTO);
+            TryValidateModel(result.bookForUpdateDto);
 
             if (!ModelState.IsValid)
-                return UnprocessableEntity(ModelState);
+                return UnprocessableEntity(ModelState);//422
 
-            _manager.BookService.SaveChangesForPatch(result.bookForUpdateDTO, result.book);
+            _manager.BookService.SaveChangesForPatch(result.bookForUpdateDto, result.book);
             
-            return NoContent();
+            return NoContent();//204
         }
     }
 }

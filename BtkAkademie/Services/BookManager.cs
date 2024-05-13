@@ -52,11 +52,11 @@ namespace Services
             return _mapper.Map<IEnumerable<BookDTO>>(books);
         }
 
-        public (BookForUpdateDTO bookForUpdateDTO, Book book) GetOneBookForPatch(int id, bool trachChanges)
+        public (BookForUpdateDTO bookForUpdateDto, Book book) GetOneBookForPatch(int id, bool trachChanges)
         {
             var book = _manager.Book.GetOneBookId(id,trachChanges);
 
-            if(book is null)
+            if (book is null)
                 throw new BookNotFoundException(id);
 
             var bookForUpdateDto = _mapper.Map<BookForUpdateDTO>(book);
