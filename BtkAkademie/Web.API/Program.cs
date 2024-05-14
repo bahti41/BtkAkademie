@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NLog;
+using Presentation.ActionFilters;
 using Repositories.EfCore;
 using Services.Contracts;
 using Web.API.Extansions;
@@ -42,8 +43,8 @@ builder.Services.ConfigurServiceManager();
 builder.Services.ConfigureLoggerService();
 //AutoMapping
 builder.Services.AddAutoMapper(typeof(Program));
-
-
+//IoC Ýþlem Yapýlandýrmasý
+builder.Services.ConfigureActionfilters();
 
 
 

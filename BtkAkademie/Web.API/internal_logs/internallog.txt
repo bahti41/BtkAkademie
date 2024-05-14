@@ -138,3 +138,31 @@
 2024-05-14 02:00:08.1561 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.3.2.2526. Product version: 5.3.2+8d52d4f3fcdbd84beae3442e1fdc8125598ed81f. GlobalAssemblyCache: False
 2024-05-14 02:00:08.1648 Info Validating config: TargetNames=logfile, ConfigItems=12, FilePath=C:\githubcalismasi\Egitiim\BtkAkademie\BtkAkademie\Web.API\nlog.config
 2024-05-14 02:00:08.1771 Info Configuration initialized.
+2024-05-14 03:19:20.7129 Info Registered target NLog.Targets.FileTarget(Name=logfile)
+2024-05-14 03:19:20.7302 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.3.2.2526. Product version: 5.3.2+8d52d4f3fcdbd84beae3442e1fdc8125598ed81f. GlobalAssemblyCache: False
+2024-05-14 03:19:20.7406 Info Validating config: TargetNames=logfile, ConfigItems=12, FilePath=C:\githubcalismasi\Egitiim\BtkAkademie\BtkAkademie\Web.API\nlog.config
+2024-05-14 03:19:20.7536 Info Configuration initialized.
+2024-05-14 03:59:47.8953 Info Registered target NLog.Targets.FileTarget(Name=logfile)
+2024-05-14 03:59:47.9212 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.3.2.2526. Product version: 5.3.2+8d52d4f3fcdbd84beae3442e1fdc8125598ed81f. GlobalAssemblyCache: False
+2024-05-14 03:59:47.9329 Info Validating config: TargetNames=logfile, ConfigItems=12, FilePath=C:\githubcalismasi\Egitiim\BtkAkademie\BtkAkademie\Web.API\nlog.config
+2024-05-14 03:59:47.9448 Info Configuration initialized.
+2024-05-14 04:11:31.9656 Info Registered target NLog.Targets.FileTarget(Name=logfile)
+2024-05-14 04:11:31.9930 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.3.2.2526. Product version: 5.3.2+8d52d4f3fcdbd84beae3442e1fdc8125598ed81f. GlobalAssemblyCache: False
+2024-05-14 04:11:32.0022 Info Validating config: TargetNames=logfile, ConfigItems=12, FilePath=C:\githubcalismasi\Egitiim\BtkAkademie\BtkAkademie\Web.API\nlog.config
+2024-05-14 04:11:32.0022 Info Configuration initialized.
+2024-05-14 04:48:26.3123 Info Registered target NLog.Targets.FileTarget(Name=logfile)
+2024-05-14 04:48:26.3311 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.3.2.2526. Product version: 5.3.2+8d52d4f3fcdbd84beae3442e1fdc8125598ed81f. GlobalAssemblyCache: False
+2024-05-14 04:48:26.3311 Info Validating config: TargetNames=logfile, ConfigItems=12, FilePath=C:\githubcalismasi\Egitiim\BtkAkademie\BtkAkademie\Web.API\nlog.config
+2024-05-14 04:48:26.3535 Info Configuration initialized.
+2024-05-14 04:49:46.1328 Info Registered target NLog.Targets.FileTarget(Name=logfile)
+2024-05-14 04:49:46.1422 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.3.2.2526. Product version: 5.3.2+8d52d4f3fcdbd84beae3442e1fdc8125598ed81f. GlobalAssemblyCache: False
+2024-05-14 04:49:46.1422 Info Validating config: TargetNames=logfile, ConfigItems=12, FilePath=C:\githubcalismasi\Egitiim\BtkAkademie\BtkAkademie\Web.API\nlog.config
+2024-05-14 04:49:46.1422 Info Configuration initialized.
+2024-05-14 04:51:25.3314 Info Registered target NLog.Targets.FileTarget(Name=logfile)
+2024-05-14 04:51:25.4686 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.3.2.2526. Product version: 5.3.2+8d52d4f3fcdbd84beae3442e1fdc8125598ed81f. GlobalAssemblyCache: False
+2024-05-14 04:51:25.4773 Info Validating config: TargetNames=logfile, ConfigItems=12, FilePath=C:\githubcalismasi\Egitiim\BtkAkademie\BtkAkademie\Web.API\nlog.config
+2024-05-14 04:51:25.4913 Info Configuration initialized.
+2024-05-14 04:54:44.5442 Info Registered target NLog.Targets.FileTarget(Name=logfile)
+2024-05-14 04:54:44.5537 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.3.2.2526. Product version: 5.3.2+8d52d4f3fcdbd84beae3442e1fdc8125598ed81f. GlobalAssemblyCache: False
+2024-05-14 04:54:44.5537 Info Validating config: TargetNames=logfile, ConfigItems=12, FilePath=C:\githubcalismasi\Egitiim\BtkAkademie\BtkAkademie\Web.API\nlog.config
+2024-05-14 04:54:44.5734 Info Configuration initialized.
