@@ -2,6 +2,7 @@
 using Entities.Concrete;
 using Entities.DTOs;
 using Entities.Exceptions;
+using Entities.RequestFeatures;
 using Repositories.Contracts;
 using Services.Contracts;
 using System;
@@ -45,11 +46,13 @@ namespace Services
         }
 
 
-        public async Task<IEnumerable<BookDTO>> GetAllBooksAsync(bool trackChanges)
+        public async Task<(IEnumerable<BookDTO> books, MetaData metaData)> GetAllBooksAsync(BookParameters bookParameters, bool trackChanges)
         {
-            var books = await _manager.Book.GetAllBooksAsync(trackChanges);
+            var booksWithMetaData = await _manager.Book.GetAllBooksAsync(bookParameters ,trackChanges);
 
-            return _mapper.Map<IEnumerable<BookDTO>>(books);
+            var bookDto = _mapper.Map<IEnumerable<BookDTO>>(booksWithMetaData);
+
+            return (bookDto, booksWithMetaData.MetaData);
         }
 
 

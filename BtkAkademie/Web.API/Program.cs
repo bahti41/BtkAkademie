@@ -45,7 +45,8 @@ builder.Services.ConfigureLoggerService();
 builder.Services.AddAutoMapper(typeof(Program));
 //IoC Ýþlem Yapýlandýrmasý
 builder.Services.ConfigureActionfilters();
-
+//Ýstemcilerin uygulamaya istek atma iþlemi(izin iþlemi)
+builder.Services.ConfigureCors();
 
 
 
@@ -70,6 +71,8 @@ if (app.Environment.IsProduction())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors("CorsPolicy");
 
 app.UseAuthorization();
 

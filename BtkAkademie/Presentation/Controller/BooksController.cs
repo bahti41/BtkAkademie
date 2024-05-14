@@ -1,4 +1,7 @@
 ﻿using Entities.DTOs;
+using Entities.Exceptions;
+using Entities.RequestFeatures;
+using Entities.Concrete;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.ActionFilters;
@@ -8,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Presentation.Controller
@@ -25,10 +29,13 @@ namespace Presentation.Controller
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllBooksAsync()
+        public async Task<IActionResult> GetAllBooksAsync([FromQuery] BookParameters bookParameters)
         {
-            var books = await _manager.BookService.GetAllBooksAsync(false);
-            return Ok(books);
+            var pagedResult = await _manager.BookService.GetAllBooksAsync(bookParameters, false);
+
+            Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(pagedResult.metaData));
+
+            return Ok(pagedResult.books);
         }
 
         [HttpGet("{id}")]
@@ -52,7 +59,7 @@ namespace Presentation.Controller
             return StatusCode(201, book);//204
         }
 
-        
+
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateOneBookAsync([FromRoute(Name = "id")] int id, [FromBody] BookForUpdateDTO bookDto)
@@ -80,7 +87,7 @@ namespace Presentation.Controller
 
             var result = await _manager.BookService.GetOneBookForPatchAsync(id, false);
 
-            bookPatch.ApplyTo(result.bookForUpdateDto,ModelState);
+            bookPatch.ApplyTo(result.bookForUpdateDto, ModelState);
 
             TryValidateModel(result.bookForUpdateDto);
 
@@ -88,7 +95,7 @@ namespace Presentation.Controller
                 return UnprocessableEntity(ModelState);//422
 
             await _manager.BookService.SaveChangesForPatchAsync(result.bookForUpdateDto, result.book);
-            
+
             return NoContent();//204
         }
     }
