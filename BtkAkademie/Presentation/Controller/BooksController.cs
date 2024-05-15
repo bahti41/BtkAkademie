@@ -28,7 +28,8 @@ namespace Presentation.Controller
             _manager = manager;
         }
 
-        [HttpGet]
+        [HttpHead]
+        [HttpGet(Name ="GetAllBooksAsync")]
         public async Task<IActionResult> GetAllBooksAsync([FromQuery] BookParameters bookParameters)
         {
             var pagedResult = await _manager.BookService.GetAllBooksAsync(bookParameters, false);
@@ -95,6 +96,13 @@ namespace Presentation.Controller
             await _manager.BookService.SaveChangesForPatchAsync(result.bookForUpdateDto, result.book);
 
             return NoContent();//204
+        }
+
+        [HttpOptions]
+        public IActionResult GetBooksOptions()
+        {
+            Response.Headers.Add("Allow", "GET, PUT, POST, PATCH, DELETE, HEAD, OPTIONS");
+            return Ok();
         }
     }
 }
