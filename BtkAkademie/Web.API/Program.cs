@@ -47,6 +47,9 @@ builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.ConfigureActionfilters();
 //Ýstemcilerin uygulamaya istek atma iþlemi(izin iþlemi)
 builder.Services.ConfigureCors();
+//Property'leri Þekillendirme iþlemi
+builder.Services.ConfigureDataShaper();
+
 
 
 

@@ -7,6 +7,7 @@ using Repositories.Contracts;
 using Services.Contracts;
 using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,12 +19,14 @@ namespace Services
         private readonly IRepositoryManager _manager;
         private readonly ILoggerService _logger;
         private readonly IMapper _mapper;
+        private readonly IDataShaper<BookDTO> _shaper;
 
-        public BookManager(IRepositoryManager manager, ILoggerService logger, IMapper mapper)
+        public BookManager(IRepositoryManager manager, ILoggerService logger, IMapper mapper, IDataShaper<BookDTO> shaper)
         {
             _manager = manager;
             _logger = logger;
             _mapper = mapper;
+            _shaper = shaper;
         }
 
         public async Task<BookDTO> CreatOneBookAsync(BookForInsertionDTO
@@ -46,13 +49,18 @@ namespace Services
         }
 
 
-        public async Task<(IEnumerable<BookDTO> books, MetaData metaData)> GetAllBooksAsync(BookParameters bookParameters, bool trackChanges)
+        public async Task<(IEnumerable<ExpandoObject> books, MetaData metaData)> GetAllBooksAsync(BookParameters bookParameters, bool trackChanges)
         {
+            if (!bookParameters.ValidPriceRange)
+                throw new PriceOutofRangeBadRequestException();
+
             var booksWithMetaData = await _manager.Book.GetAllBooksAsync(bookParameters ,trackChanges);
 
             var bookDto = _mapper.Map<IEnumerable<BookDTO>>(booksWithMetaData);
 
-            return (bookDto, booksWithMetaData.MetaData);
+            var shapedData = _shaper.ShapeData(bookDto, bookParameters.Fields);
+
+            return (book: shapedData, metaData : booksWithMetaData.MetaData);
         }
 
 
