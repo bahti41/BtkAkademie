@@ -66,22 +66,22 @@ namespace Web.API.Extansions
 
         public static void AddCustomMediaTypes(this IServiceCollection services)
         {
-            services.Configure<MvcOptions>(option =>
+            services.Configure<MvcOptions>(config =>
             {
-                var systemTextJsonOutputFormatter = option
+                var systemTextJsonOutputFormatter = config
                 .OutputFormatters
                 .OfType<SystemTextJsonOutputFormatter>()?.FirstOrDefault();
 
-                if (systemTextJsonOutputFormatter is not null)
+                if (systemTextJsonOutputFormatter != null)
                 {
                     systemTextJsonOutputFormatter.SupportedMediaTypes.Add("application/vnd.sonmez.hateoes+json");
                 }
 
-                var xmlOutputFormatter = option
+                var xmlOutputFormatter = config
                 .OutputFormatters
-                .OfType<XmlDataContractSerializerOutputFormatter>().FirstOrDefault();
+                .OfType<XmlDataContractSerializerOutputFormatter>()?.FirstOrDefault();
 
-                if(xmlOutputFormatter is not null)
+                if (xmlOutputFormatter is not null)
                 {
                     xmlOutputFormatter.SupportedMediaTypes.Add("application/vnd.sonmez.hateoes+xml");
                 }
