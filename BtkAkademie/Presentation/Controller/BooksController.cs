@@ -41,7 +41,6 @@ namespace Presentation.Controller
         [HttpGet("{id}")]
         public async Task<IActionResult> GetOneBookAsync([FromRoute(Name = "id")] int id)
         {
-
             var book = await _manager
                 .BookService
                 .GetOneBookIdAsync(id, false);
@@ -53,7 +52,6 @@ namespace Presentation.Controller
         [HttpPost]
         public async Task<IActionResult> CreateOneBookAsync([FromBody] BookForInsertionDTO bookDto)
         {
-
             var book = await _manager.BookService.CreatOneBookAsync(bookDto);
 
             return StatusCode(201, book);//204

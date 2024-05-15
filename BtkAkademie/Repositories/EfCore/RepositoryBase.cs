@@ -34,7 +34,6 @@ namespace Repositories.EfCore
             !trackChanges ? 
             _context.Set<T>().AsNoTracking() : 
             _context.Set<T>();
-        // AsNoTracking Koşulu  takit etmemeyi saglıyor
 
         public IQueryable<T> FindByCondition(Expression<Func<T, bool>> expression, bool trackChanges) =>
             !trackChanges ?
