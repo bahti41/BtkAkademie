@@ -1,4 +1,6 @@
 ﻿using Entities.DTOs;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.EntityFrameworkCore;
 using Presentation.ActionFilters;
 using Repositories.Contracts;
@@ -39,6 +41,7 @@ namespace Web.API.Extansions
         {
             services.AddScoped<ValidationFilterAttribute>();
             services.AddSingleton<LogFilterAttribute>();
+            services.AddScoped<ValidateMediaTypeAttribute>();
         }
 
 
@@ -58,6 +61,31 @@ namespace Web.API.Extansions
         public static void ConfigureDataShaper(this IServiceCollection services)
         {
             services.AddScoped<IDataShaper<BookDTO>, DataShaper<BookDTO>>();
+        }
+
+
+        public static void AddCustomMediaTypes(this IServiceCollection services)
+        {
+            services.Configure<MvcOptions>(option =>
+            {
+                var systemTextJsonOutputFormatter = option
+                .OutputFormatters
+                .OfType<SystemTextJsonOutputFormatter>()?.FirstOrDefault();
+
+                if (systemTextJsonOutputFormatter is not null)
+                {
+                    systemTextJsonOutputFormatter.SupportedMediaTypes.Add("application/vnd.sonmez.hateoes+json");
+                }
+
+                var xmlOutputFormatter = option
+                .OutputFormatters
+                .OfType<XmlDataContractSerializerOutputFormatter>().FirstOrDefault();
+
+                if(xmlOutputFormatter is not null)
+                {
+                    xmlOutputFormatter.SupportedMediaTypes.Add("application/vnd.sonmez.hateoes+xml");
+                }
+            });
         }
     }
 }

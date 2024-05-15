@@ -49,6 +49,8 @@ builder.Services.ConfigureActionfilters();
 builder.Services.ConfigureCors();
 //Property'leri Þekillendirme iþlemi
 builder.Services.ConfigureDataShaper();
+//Xlm ve Json MedyaType iþlemi
+builder.Services.AddCustomMediaTypes();
 
 
 
