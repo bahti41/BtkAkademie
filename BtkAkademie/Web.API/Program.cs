@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using NLog;
 using Presentation.ActionFilters;
 using Repositories.EfCore;
+using Services;
 using Services.Contracts;
 using Web.API.Extansions;
 
@@ -15,12 +16,13 @@ builder.Services.AddControllers(config =>
     config.RespectBrowserAcceptHeader = true;
     config.ReturnHttpNotAcceptable = true;
 })
-    //Cvs formantýnda calýþtýrma
-    .AddCustomCvsFormantter()
     //Xml Formantýnda calýþtýrma
     .AddXmlDataContractSerializerFormatters()
-    .AddApplicationPart(typeof(Presentation.AssemblyReference).Assembly)
-    .AddNewtonsoftJson();
+    //Cvs formantýnda calýþtýrma
+    .AddCustomCvsFormantter()
+
+    .AddApplicationPart(typeof(Presentation.AssemblyReference).Assembly);
+    //.AddNewtonsoftJson();
 
 
 // Dogrulamalar iþlemleri filitreleme
@@ -51,6 +53,8 @@ builder.Services.ConfigureCors();
 builder.Services.ConfigureDataShaper();
 //Xlm ve Json MedyaType iþlemi
 builder.Services.AddCustomMediaTypes();
+//
+builder.Services.AddScoped<IBookLinks, BookLinks>();
 
 
 
