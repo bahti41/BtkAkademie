@@ -68,22 +68,22 @@ namespace Web.API.Extansions
         {
             services.Configure<MvcOptions>(config =>
             {
-                var systemTextJsonOutputFormatter = config
-                .OutputFormatters
-                .OfType<SystemTextJsonOutputFormatter>()?.FirstOrDefault();
+                var systemTextJsonOutputFormatter = config.OutputFormatters.OfType<SystemTextJsonOutputFormatter>()?.FirstOrDefault();
 
                 if (systemTextJsonOutputFormatter != null)
                 {
                     systemTextJsonOutputFormatter.SupportedMediaTypes.Add("application/vnd.sonmez.hateoes+json");
+
+                    systemTextJsonOutputFormatter.SupportedMediaTypes.Add("application/vnd.sonmez.apiroot+json");
                 }
 
-                var xmlOutputFormatter = config
-                .OutputFormatters
-                .OfType<XmlDataContractSerializerOutputFormatter>()?.FirstOrDefault();
+                var xmlOutputFormatter = config.OutputFormatters.OfType<XmlDataContractSerializerOutputFormatter>()?.FirstOrDefault();
 
                 if (xmlOutputFormatter is not null)
                 {
                     xmlOutputFormatter.SupportedMediaTypes.Add("application/vnd.sonmez.hateoes+xml");
+
+                    xmlOutputFormatter.SupportedMediaTypes.Add("application/vnd.sonmez.apiroot+xml");
                 }
             });
         }
