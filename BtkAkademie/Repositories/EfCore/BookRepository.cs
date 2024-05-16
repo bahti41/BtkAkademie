@@ -33,11 +33,16 @@ namespace Repositories.EfCore
             return PagedList<Book>.ToPagedList(books, bookParameters.PageNumber, bookParameters.PageSize);
         }
 
-
         public async Task<Book> GetOneBookIdAsync(int id, bool TrackChanges) =>
             await FindByCondition(b => b.Id.Equals(id), TrackChanges)
             .SingleOrDefaultAsync();
 
         public void UpdateOneBook(Book book) => Update(book);
+
+        //Verioning
+        public async Task<List<Book>> GetAllBooksAsync(bool trachChanges)
+        {
+            return await FindAll(trachChanges).OrderBy(b=> b.Id).ToListAsync();
+        }
     }
 }
