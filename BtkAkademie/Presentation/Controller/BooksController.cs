@@ -16,9 +16,12 @@ using System.Threading.Tasks;
 
 namespace Presentation.Controller
 {
+    //[ApiVersion("1.0")]// Route ile versiyonlama
     [ServiceFilter(typeof(LogFilterAttribute))]
     [ApiController]
-    [Route("api/books")]
+    //[Route("api/{v:apiversion}/books")] // URL ile versionlama
+    [Route("api/books")] // Header İle Versiyonlama
+    //[ResponseCache(CacheProfileName ="5min")]
     public class BooksController : ControllerBase
     {
         private readonly IServiceManager _manager;
@@ -28,9 +31,10 @@ namespace Presentation.Controller
             _manager = manager;
         }
 
-        [ServiceFilter(typeof(ValidateMediaTypeAttribute))]
         [HttpHead]
         [HttpGet(Name = "GetAllBooksAsync")]
+        [ServiceFilter(typeof(ValidateMediaTypeAttribute))]
+        //[ResponseCache(Duration =60)]
         public async Task<IActionResult> GetAllBooksAsync([FromQuery] BookParameters bookParameters)
         {
             var linkParameters = new LinkParameters()

@@ -22,5 +22,8 @@ namespace Services.Contracts
         Task<(BookForUpdateDTO bookForUpdateDto,Book book)> GetOneBookForPatchAsync(int id,bool trachChanges);
 
         Task SaveChangesForPatchAsync(BookForUpdateDTO bookForUpdateDTO,Book book);
+
+        //Versioning
+        Task<List<Book>> GetAllBooksAsync(bool trachChanges);
     }
 }

@@ -1,8 +1,12 @@
-﻿using Entities.DTOs;
+﻿using AspNetCoreRateLimit;
+using Entities.DTOs;
+using Marvin.Cache.Headers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters;
+using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.EntityFrameworkCore;
 using Presentation.ActionFilters;
+using Presentation.Controller;
 using Repositories.Contracts;
 using Repositories.EfCore;
 using Services;
@@ -86,6 +90,63 @@ namespace Web.API.Extansions
                     xmlOutputFormatter.SupportedMediaTypes.Add("application/vnd.sonmez.apiroot+xml");
                 }
             });
+        }
+
+
+        public static void ConfigureVesioning(this IServiceCollection services)
+        {
+            services.AddApiVersioning(opt =>
+            {
+                opt.ReportApiVersions = true;
+                opt.AssumeDefaultVersionWhenUnspecified = true;
+                opt.DefaultApiVersion = new ApiVersion(1, 0);
+                opt.ApiVersionReader = new HeaderApiVersionReader("api-version");
+                opt.Conventions.Controller<BooksController>().HasApiVersion(new ApiVersion(1,0));
+                opt.Conventions.Controller<BooksV2Controller>().HasDeprecatedApiVersion(new ApiVersion(2,0));
+            });
+        }
+
+
+        public static void ConfigureResponseChaching(this IServiceCollection services)
+        {
+            services.AddResponseCaching();
+        }
+
+
+        public static void ConfigureHttpCacheHeader(this IServiceCollection services)
+        {
+            services.AddHttpCacheHeaders(expirationOpt =>
+            {
+                expirationOpt.MaxAge = 80;
+                expirationOpt.CacheLocation = CacheLocation.Public;
+            },
+            validationOpt =>
+            {
+                validationOpt.MustRevalidate = false;
+            });
+        }
+
+
+        public static void ConfigureRateLimitingOptions(this IServiceCollection services)
+        {
+            var rateLimitRoles = new List<RateLimitRule>()
+            {
+                new RateLimitRule()
+                {
+                    Endpoint="*",
+                    Limit=3,
+                    Period= "1m"
+                }
+            };
+            services.Configure<IpRateLimitOptions>(opt =>
+            {
+                opt.GeneralRules = rateLimitRoles;
+            });
+
+            services.AddSingleton<IRateLimitCounterStore, MemoryCacheRateLimitCounterStore>();
+            services.AddSingleton<IIpPolicyStore, MemoryCacheIpPolicyStore>();
+            services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();
+            services.AddSingleton<IProcessingStrategy, AsyncKeyLockProcessingStrategy>();
         }
     }
 }

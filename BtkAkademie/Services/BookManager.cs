@@ -115,5 +115,13 @@ namespace Services
             
             return entity;
         }
+
+        // Verioning
+        public Task<List<Book>> GetAllBooksAsync(bool trachChanges)
+        {
+            var books = _manager.Book.GetAllBooksAsync(trachChanges);
+            return books;
+        }
+
     }
 }
