@@ -1,4 +1,5 @@
 ﻿using Entities.Concrete;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Repositories.EfCore.Config;
 using System;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Repositories.EfCore
 {
-    public class BookDbContext:DbContext
+    public class BookDbContext:IdentityDbContext<User>
     {
         public BookDbContext(DbContextOptions options) : base(options)
         {
@@ -20,6 +21,7 @@ namespace Repositories.EfCore
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
             modelBuilder.ApplyConfiguration(new BookConfig());
         }
     }
