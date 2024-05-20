@@ -23,6 +23,8 @@ namespace Presentation.Controller
     //[Route("api/{v:apiversion}/books")] // URL ile versionlama
     [Route("api/books")] // Header İle Versiyonlama
     //[ResponseCache(CacheProfileName ="5min")]
+    [ApiExplorerSettings(GroupName = "v1")]
+
     public class BooksController : ControllerBase
     {
         private readonly IServiceManager _manager;
@@ -32,8 +34,9 @@ namespace Presentation.Controller
             _manager = manager;
         }
 
+
         [Authorize]
-        [HttpHead]
+        //[HttpHead]
         [HttpGet(Name = "GetAllBooksAsync")]
         [ServiceFilter(typeof(ValidateMediaTypeAttribute))]
         //[ResponseCache(Duration =60)]
@@ -53,6 +56,7 @@ namespace Presentation.Controller
                 Ok(result.linkResponse.LinkedEntities) :
                 Ok(result.linkResponse.ShapedEntities);
         }
+
 
         [Authorize]
         [HttpGet("{id}")]
@@ -86,6 +90,7 @@ namespace Presentation.Controller
 
             return NoContent();//204
         }
+
 
         [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
