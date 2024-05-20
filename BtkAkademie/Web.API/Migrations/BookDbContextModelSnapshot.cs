@@ -110,6 +110,12 @@ namespace Web.API.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
+                    b.Property<string>("RefleshToken")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("RefleshTokenExpiryTime")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
@@ -162,19 +168,19 @@ namespace Web.API.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "e0998b19-0060-4c3d-8432-f53df40e659f",
+                            Id = "daaf0aa7-0bd9-4f7b-b859-3e9a00225d56",
                             Name = "User",
                             NormalizedName = "USER"
                         },
                         new
                         {
-                            Id = "acff28ad-fd34-4d36-945c-176d03299059",
+                            Id = "c65f07b2-043d-49b8-a311-d58858ca00f3",
                             Name = "Person",
                             NormalizedName = "PERSON"
                         },
                         new
                         {
-                            Id = "aa021978-8067-4fa4-a45e-083977cc3c90",
+                            Id = "91fd185c-4482-4060-9630-59b7881ed7b6",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         });

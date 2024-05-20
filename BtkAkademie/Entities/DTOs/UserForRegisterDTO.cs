@@ -14,10 +14,10 @@ namespace Entities.DTOs
         [Required(ErrorMessage ="User name is required")]
         public string? UserName { get; init; }
         [Required(ErrorMessage = "Password is required")]
-        public string? Password{ get; set; }
-        public string? Email { get; set; }
-        public string? PhoneNumber { get; set; }
+        public string? Password{ get; init; }
+        public string? Email { get; init; }
+        public string? PhoneNumber { get; init; }
 
-        public ICollection<string>? Roles { get; set; }
+        public ICollection<string>? Roles { get; init; }
     }
 }

@@ -28,7 +28,8 @@ namespace Repositories.EfCore.Config
                 {
                     Name = "Admin",
                     NormalizedName = "ADMIN"
-                });
+                }
+            );
         }
     }
 }
