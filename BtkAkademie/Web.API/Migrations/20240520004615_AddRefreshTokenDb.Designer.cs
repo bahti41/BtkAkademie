@@ -12,8 +12,8 @@ using Repositories.EfCore;
 namespace Web.API.Migrations
 {
     [DbContext(typeof(BookDbContext))]
-    [Migration("20240518134750_CreatIdentityDb")]
-    partial class CreatIdentityDb
+    [Migration("20240520004615_AddRefreshTokenDb")]
+    partial class AddRefreshTokenDb
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -113,6 +113,12 @@ namespace Web.API.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
+                    b.Property<string>("RefleshToken")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("RefleshTokenExpiryTime")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
@@ -161,6 +167,26 @@ namespace Web.API.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "daaf0aa7-0bd9-4f7b-b859-3e9a00225d56",
+                            Name = "User",
+                            NormalizedName = "USER"
+                        },
+                        new
+                        {
+                            Id = "c65f07b2-043d-49b8-a311-d58858ca00f3",
+                            Name = "Person",
+                            NormalizedName = "PERSON"
+                        },
+                        new
+                        {
+                            Id = "91fd185c-4482-4060-9630-59b7881ed7b6",
+                            Name = "Admin",
+                            NormalizedName = "ADMIN"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

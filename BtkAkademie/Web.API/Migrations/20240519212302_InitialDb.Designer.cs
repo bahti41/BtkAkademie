@@ -12,8 +12,8 @@ using Repositories.EfCore;
 namespace Web.API.Migrations
 {
     [DbContext(typeof(BookDbContext))]
-    [Migration("20240518143410_CreatRolesDb")]
-    partial class CreatRolesDb
+    [Migration("20240519212302_InitialDb")]
+    partial class InitialDb
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -165,19 +165,19 @@ namespace Web.API.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "e0998b19-0060-4c3d-8432-f53df40e659f",
+                            Id = "9b556cfb-cbdd-4cf8-ab71-37a4441933c3",
                             Name = "User",
                             NormalizedName = "USER"
                         },
                         new
                         {
-                            Id = "acff28ad-fd34-4d36-945c-176d03299059",
+                            Id = "d783fc1a-c6aa-48b5-b56f-9695aa438dfe",
                             Name = "Person",
                             NormalizedName = "PERSON"
                         },
                         new
                         {
-                            Id = "aa021978-8067-4fa4-a45e-083977cc3c90",
+                            Id = "717f4b88-7769-4a5a-9679-8595c72336da",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         });
