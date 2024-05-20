@@ -12,8 +12,8 @@ using Repositories.EfCore;
 namespace Web.API.Migrations
 {
     [DbContext(typeof(BookDbContext))]
-    [Migration("20240520004615_AddRefreshTokenDb")]
-    partial class AddRefreshTokenDb
+    [Migration("20240520132841_InitialDb")]
+    partial class InitialDb
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -113,10 +113,10 @@ namespace Web.API.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
-                    b.Property<string>("RefleshToken")
+                    b.Property<string>("RefreshToken")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("RefleshTokenExpiryTime")
+                    b.Property<DateTime>("RefreshTokenExpiryTime")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("SecurityStamp")
@@ -171,19 +171,19 @@ namespace Web.API.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "daaf0aa7-0bd9-4f7b-b859-3e9a00225d56",
+                            Id = "43ea5a4f-0419-44cb-a0f6-44504d401146",
                             Name = "User",
                             NormalizedName = "USER"
                         },
                         new
                         {
-                            Id = "c65f07b2-043d-49b8-a311-d58858ca00f3",
+                            Id = "0e0dd90d-5894-45aa-936b-cc41db43c2a5",
                             Name = "Person",
                             NormalizedName = "PERSON"
                         },
                         new
                         {
-                            Id = "91fd185c-4482-4060-9630-59b7881ed7b6",
+                            Id = "35a81736-f3ef-4f4f-b6aa-d11c099c47ca",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         });

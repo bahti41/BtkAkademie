@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using Presentation.ActionFilters;
 using Presentation.Controller;
 using Repositories.Contracts;
@@ -194,6 +195,57 @@ namespace Web.API.Extansions
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretkey))
                 }
             );
+        }
+
+
+        public static void ConfigureSwagger(this IServiceCollection services)
+        {
+            services.AddSwaggerGen(s =>
+            {
+                s.SwaggerDoc("v1",new OpenApiInfo 
+                { 
+                    Title = "BTK Akademie", 
+                    Version = "v1",
+                    Description = "BTK Akademie ASP.NET Core Web API",
+                    TermsOfService = new Uri ("https://github.com/bahti41"),
+                    Contact = new OpenApiContact
+                    {
+                        Name = "Bahtiyar Sönmez",
+                        Email = "sonmezbahtiyar4@gamil.com",
+                        Url = new Uri($"https://www.linkedin.com")
+                    }
+                });
+                s.SwaggerDoc("v2",new OpenApiInfo 
+                { 
+                    Title = "BTK Akademie", 
+                    Version = "v2" 
+                });
+
+                s.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+                {
+                    In=ParameterLocation.Header,
+                    Description="Place to add JWT with Bearar",
+                    Name="Authorization",
+                    Type=SecuritySchemeType.ApiKey,
+                    Scheme="Bearer"
+                });
+
+                s.AddSecurityRequirement(new OpenApiSecurityRequirement()
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type=ReferenceType.SecurityScheme,
+                                Id="Bearer"
+                            },
+                            Name="Bearer"
+                        },
+                        new List<string>()
+                    }
+                });
+            });
         }
     }
 }

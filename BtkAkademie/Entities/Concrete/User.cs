@@ -11,7 +11,7 @@ namespace Entities.Concrete
     {
         public String? FirstName { get; set; }
         public String? LastName { get; set; }
-        public String? RefleshToken { get; set; }
-        public DateTime RefleshTokenExpiryTime { get; set; }
+        public String? RefreshToken { get; set; }
+        public DateTime RefreshTokenExpiryTime { get; set; }
     }
 }

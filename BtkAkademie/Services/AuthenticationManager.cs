@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Entities.Concrete;
 using Entities.DTOs;
+using Entities.Exceptions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -10,6 +11,7 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -32,12 +34,28 @@ namespace Services
             _configuration = configuration;
         }
 
-        public async Task<string> CreateToken()
+        public async Task<TokenDTO> CreateToken(bool populateExp)
         {
             var signinCredentials = GetsiginCredentials();
             var claims = await GetClaims();
             var tokenOptions = GenerateTokenOptions(signinCredentials,claims);
-            return new JwtSecurityTokenHandler().WriteToken(tokenOptions);
+
+            var refreshRoken = GenereateRefreshToken();
+            _user.RefreshToken = refreshRoken;
+
+            if (populateExp)
+            {
+                _user.RefreshTokenExpiryTime = DateTime.Now.AddDays(7);
+            }
+
+            await _userManager.UpdateAsync(_user);
+            
+            var accessToken = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
+            return new TokenDTO()
+            {
+                AccessToken = accessToken,
+                RefreshToken = refreshRoken,
+            };
         }
 
         public async Task<IdentityResult> RegisterUser(UserForRegisterDTO userForRegisterDTO)
@@ -61,6 +79,20 @@ namespace Services
                 _logger.LogWarning($"{nameof(ValidetaUser)} : Authentication faild.Wrong username or password.");
             }
             return result;
+        }
+
+        public async Task<TokenDTO> RefreshToken(TokenDTO tokenDto)
+        {
+            var principal = GetPrincicalFromExpiredToken(tokenDto.AccessToken);
+            var user = await _userManager.FindByNameAsync(principal.Identity.Name);
+
+            if (user is null || user.RefreshToken != tokenDto.RefreshToken || user.RefreshTokenExpiryTime <= DateTime.Now)
+            {
+                throw new RefreshTokenBadRequsetException();
+            }
+
+            _user = user;
+            return await CreateToken(false);
         }
 
 
@@ -105,5 +137,49 @@ namespace Services
                     signingCredentials: signinCredentials);
             return tokenOptions;
         }
+
+        private string GenereateRefreshToken()
+        {
+            var randomNumber = new byte[32];
+
+            using (var rng = RandomNumberGenerator.Create())
+            {
+                rng.GetBytes(randomNumber);
+                return Convert.ToBase64String(randomNumber);
+            }
+        }
+
+        private ClaimsPrincipal GetPrincicalFromExpiredToken(string token)
+        {
+            var jwtSettings = _configuration.GetSection("JwtSettings");
+            var secretkey = jwtSettings["secretKey"];
+
+            var tokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidateLifetime = true,
+                ValidateIssuerSigningKey = true,
+                ValidIssuer = jwtSettings["validIssuer"],
+                ValidAudience = jwtSettings["validAudience"],
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretkey))
+            };
+
+            var tokenHandler = new JwtSecurityTokenHandler();
+            SecurityToken securityToken;
+
+            var principal = tokenHandler.ValidateToken(token, tokenValidationParameters, out securityToken);
+
+            var jwtSecurityToken = securityToken as JwtSecurityToken;
+
+            if (jwtSecurityToken is null || jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256,StringComparison.InvariantCultureIgnoreCase))
+            {
+                throw new SecurityTokenException("Invalid token.");
+            }
+
+            return principal;
+
+        }
+
     }
 }
