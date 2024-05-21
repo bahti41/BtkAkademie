@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Web.API.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialDb : Migration
+    public partial class InitialBd : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -57,17 +57,16 @@ namespace Web.API.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Books",
+                name: "Categories",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    CategoryId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
+                    CategoryName = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Books", x => x.Id);
+                    table.PrimaryKey("PK_Categories", x => x.CategoryId);
                 });
 
             migrationBuilder.CreateTable(
@@ -176,24 +175,55 @@ namespace Web.API.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Books",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    CategoryId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Books", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Books_Categories_CategoryId",
+                        column: x => x.CategoryId,
+                        principalTable: "Categories",
+                        principalColumn: "CategoryId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "0e0dd90d-5894-45aa-936b-cc41db43c2a5", null, "Person", "PERSON" },
-                    { "35a81736-f3ef-4f4f-b6aa-d11c099c47ca", null, "Admin", "ADMIN" },
-                    { "43ea5a4f-0419-44cb-a0f6-44504d401146", null, "User", "USER" }
+                    { "01131de4-9bc8-46a0-a468-d15627975c24", null, "Person", "PERSON" },
+                    { "2060ebd9-2e8f-4b93-8820-47a63b70bb94", null, "Admin", "ADMIN" },
+                    { "3998d903-4f06-41c2-b384-2b9ad7caa03b", null, "User", "USER" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Categories",
+                columns: new[] { "CategoryId", "CategoryName" },
+                values: new object[,]
+                {
+                    { 1, "Computer Science" },
+                    { 2, "Network" },
+                    { 3, "Database Management Systems" }
                 });
 
             migrationBuilder.InsertData(
                 table: "Books",
-                columns: new[] { "Id", "Price", "Title" },
+                columns: new[] { "Id", "CategoryId", "Price", "Title" },
                 values: new object[,]
                 {
-                    { 1, 100m, "karagöz" },
-                    { 2, 120m, "Sol Ayak" },
-                    { 3, 150m, "Şeker Henry" }
+                    { 1, 1, 100m, "karagöz" },
+                    { 2, 1, 120m, "Sol Ayak" },
+                    { 3, 2, 150m, "Şeker Henry" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -234,6 +264,11 @@ namespace Web.API.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Books_CategoryId",
+                table: "Books",
+                column: "CategoryId");
         }
 
         /// <inheritdoc />
@@ -262,6 +297,9 @@ namespace Web.API.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Categories");
         }
     }
 }

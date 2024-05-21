@@ -22,10 +22,8 @@ builder.Services.AddControllers(config =>
     .AddXmlDataContractSerializerFormatters()
     //Cvs formantýnda calýþtýrma
     .AddCustomCvsFormantter()
-
-    .AddApplicationPart(typeof(Presentation.AssemblyReference).Assembly);
-    //.AddNewtonsoftJson();
-
+    .AddApplicationPart(typeof(Presentation.AssemblyReference).Assembly)
+    .AddNewtonsoftJson(opt=>opt.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
 // Dogrulamalar iþlemleri filitreleme
 builder.Services.Configure<ApiBehaviorOptions>(options =>
@@ -71,7 +69,8 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.ConfigureIdentity();
 builder.Services.ConfigureJWT(builder.Configuration);
 
-
+builder.Services.RegisterRepositories();
+builder.Services.RegisterService();
 
 
 

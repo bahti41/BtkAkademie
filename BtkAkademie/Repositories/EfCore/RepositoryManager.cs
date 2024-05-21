@@ -10,15 +10,21 @@ namespace Repositories.EfCore
     public class RepositoryManager : IRepositoryManager
     {
         private readonly BookDbContext _Context;
-        private readonly Lazy<IBookRepository> _bookRepository;
+        private readonly IBookRepository _bookRepository;
+        private readonly ICategoryRepository _categoryRepository;
 
-        public RepositoryManager(BookDbContext context)
+        public RepositoryManager(BookDbContext context,
+            IBookRepository bookRepository,
+            ICategoryRepository categoryRepository)
         {
             _Context = context;
-            _bookRepository = new Lazy<IBookRepository>(() => new BookRepository(_Context));
+            _bookRepository = bookRepository;
+            _categoryRepository = categoryRepository;
         }
 
-        public IBookRepository Book => _bookRepository.Value;
+        public IBookRepository Book => _bookRepository;
+
+        public ICategoryRepository Category => _categoryRepository;
 
         public async Task SaveAsync()
         {

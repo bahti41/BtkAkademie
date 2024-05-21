@@ -12,8 +12,8 @@ using Repositories.EfCore;
 namespace Web.API.Migrations
 {
     [DbContext(typeof(BookDbContext))]
-    [Migration("20240520132841_InitialDb")]
-    partial class InitialDb
+    [Migration("20240521011320_InitialBd")]
+    partial class InitialBd
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -33,6 +33,9 @@ namespace Web.API.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
+
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
@@ -42,26 +45,65 @@ namespace Web.API.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CategoryId");
+
                     b.ToTable("Books");
 
                     b.HasData(
                         new
                         {
                             Id = 1,
+                            CategoryId = 1,
                             Price = 100m,
                             Title = "karagöz"
                         },
                         new
                         {
                             Id = 2,
+                            CategoryId = 1,
                             Price = 120m,
                             Title = "Sol Ayak"
                         },
                         new
                         {
                             Id = 3,
+                            CategoryId = 2,
                             Price = 150m,
                             Title = "Şeker Henry"
+                        });
+                });
+
+            modelBuilder.Entity("Entities.Concrete.Category", b =>
+                {
+                    b.Property<int>("CategoryId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CategoryId"));
+
+                    b.Property<string>("CategoryName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("CategoryId");
+
+                    b.ToTable("Categories");
+
+                    b.HasData(
+                        new
+                        {
+                            CategoryId = 1,
+                            CategoryName = "Computer Science"
+                        },
+                        new
+                        {
+                            CategoryId = 2,
+                            CategoryName = "Network"
+                        },
+                        new
+                        {
+                            CategoryId = 3,
+                            CategoryName = "Database Management Systems"
                         });
                 });
 
@@ -171,19 +213,19 @@ namespace Web.API.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "43ea5a4f-0419-44cb-a0f6-44504d401146",
+                            Id = "3998d903-4f06-41c2-b384-2b9ad7caa03b",
                             Name = "User",
                             NormalizedName = "USER"
                         },
                         new
                         {
-                            Id = "0e0dd90d-5894-45aa-936b-cc41db43c2a5",
+                            Id = "01131de4-9bc8-46a0-a468-d15627975c24",
                             Name = "Person",
                             NormalizedName = "PERSON"
                         },
                         new
                         {
-                            Id = "35a81736-f3ef-4f4f-b6aa-d11c099c47ca",
+                            Id = "2060ebd9-2e8f-4b93-8820-47a63b70bb94",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         });
@@ -293,6 +335,17 @@ namespace Web.API.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("Entities.Concrete.Book", b =>
+                {
+                    b.HasOne("Entities.Concrete.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Category");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

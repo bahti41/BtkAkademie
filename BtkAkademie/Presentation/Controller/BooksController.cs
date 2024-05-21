@@ -59,6 +59,14 @@ namespace Presentation.Controller
 
 
         [Authorize]
+        [HttpGet("Details")]
+        public async Task<IActionResult> GetAllWithDetailAsync()
+        {
+            return Ok(await _manager.BookService.GetAllBooksWithDetailsAsync(false));
+        }
+
+
+        [Authorize]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetOneBookAsync([FromRoute(Name = "id")] int id)
         {

@@ -25,5 +25,8 @@ namespace Services.Contracts
 
         //Versioning
         Task<List<Book>> GetAllBooksAsync(bool trachChanges);
+
+        //İlişkisel Durum icin
+        Task<IEnumerable<Book>> GetAllBooksWithDetailsAsync(bool trachChanges);
     }
 }
