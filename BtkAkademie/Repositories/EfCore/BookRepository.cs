@@ -44,5 +44,11 @@ namespace Repositories.EfCore
         {
             return await FindAll(trachChanges).OrderBy(b=> b.Id).ToListAsync();
         }
+
+        //İlişkisel Durum icin
+        public async Task<IEnumerable<Book>> GetAllBooksWithDetailsAsync(bool trachChanges)
+        {
+            return await _context.Books.Include(b=>b.Category).OrderBy(b=>b.Id).ToListAsync();
+        }
     }
 }

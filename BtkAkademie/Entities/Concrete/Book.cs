@@ -11,5 +11,10 @@ namespace Entities.Concrete
         public int Id { get; set; }
         public string Title { get; set; }
         public decimal Price { get; set; }
+
+        //Ref :Collection Navigation Property
+        public int CategoryId { get; set; }
+        public Category Category { get; set; }
+
     }
 }

@@ -15,7 +15,11 @@ namespace Repositories.Contracts
         void CreateOneBook(Book book);
         void UpdateOneBook(Book book);
         void DeleteOneBook(Book book);
-        //Verioning
+
+        //Versioning
         Task<List<Book>> GetAllBooksAsync(bool trachChanges);
+
+        //İlişkisel Durum icin
+        Task<IEnumerable<Book>> GetAllBooksWithDetailsAsync(bool trachChanges);
     }
 }

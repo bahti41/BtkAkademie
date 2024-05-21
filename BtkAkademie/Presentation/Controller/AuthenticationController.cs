@@ -45,7 +45,7 @@ namespace Presentation.Controller
         public async Task<IActionResult> Authenticate([FromBody]UserForAuthenticationDTO userForAuthenticationDTO)
         {
             if(!await _service.AuthenticationService.ValidetaUser(userForAuthenticationDTO))
-                return Unauthorized(); // 401 Giriş izni yok
+                return Unauthorized(); 
             var tokenDto = await _service.AuthenticationService.CreateToken(true);
 
             return Ok(tokenDto);
